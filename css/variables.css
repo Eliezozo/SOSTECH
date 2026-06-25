@@ -1,0 +1,31 @@
+:root {
+  --color-bg: #0b1420;
+  --color-bg-alt: #111d2e;
+  --color-bg-card: #162032;
+  --color-primary: #1a4fa0;
+  --color-primary-hover: #2563b8;
+  --color-secondary: #00c2a8;
+  --color-gold: #d4a017;
+  --color-accent: #e63946;
+  --color-text: #f0f4f8;
+  --color-text-muted: #94a3b8;
+  --color-border: rgba(148, 163, 184, 0.15);
+  --color-overlay: rgba(11, 20, 32, 0.85);
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-heading: "Rajdhani", system-ui, sans-serif;
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 30px rgba(26, 111, 212, 0.15);
+  --header-height: 72px;
+  --container-max: 1200px;
+  --transition: 0.25s ease;
+}
