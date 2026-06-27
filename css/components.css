@@ -80,6 +80,15 @@
   display: flex;
   align-items: center;
   gap: var(--space-md);
+  margin-left: auto;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  margin-left: var(--space-sm);
 }
 
 .nav-list {
@@ -127,10 +136,10 @@
 .lang-switcher {
   display: flex;
   gap: 0;
-  margin-left: 0.5rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .lang-btn {
@@ -465,12 +474,21 @@
 
 @media (max-width: 768px) {
   .brand-logo-img {
-    height: 42px;
-    max-width: 155px;
+    height: 40px;
+    max-width: 130px;
+  }
+
+  .header-actions {
+    margin-left: auto;
+    z-index: 1001;
   }
 
   .menu-toggle {
     display: flex;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    padding: 9px;
   }
 
   .main-nav {
@@ -478,6 +496,7 @@
     top: var(--header-height);
     left: 0;
     right: 0;
+    margin-left: 0;
     flex-direction: column;
     align-items: stretch;
     background: var(--color-bg-alt);
@@ -488,6 +507,7 @@
     opacity: 0;
     pointer-events: none;
     transition: transform var(--transition), opacity var(--transition);
+    z-index: 999;
   }
 
   .main-nav.is-open {
@@ -504,13 +524,6 @@
   .nav-link {
     display: block;
     padding: 0.85rem 1rem;
-  }
-
-  .lang-switcher {
-    margin-left: 0;
-    justify-content: center;
-    width: fit-content;
-    align-self: center;
   }
 
   .footer-grid {
