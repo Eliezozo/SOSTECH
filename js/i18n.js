@@ -64,7 +64,7 @@ const translations = {
     "services.s7.desc": "24/7 surveillance monitoring to enhance security. Our experts use cutting-edge technology to detect threats and provide real-time footage.",
     "services.s8.title": "Maintenance Service",
     "services.s8.desc": "Routine maintenance including cleaning cameras, lenses, and equipment to keep your CCTV systems free from dust and operating optimally.",
-        "services.s9.title": "IP Phone System Installation",
+    "services.s9.title": "IP Phone System Installation",
     "services.s9.desc": "Professional IP phone system design and installation for clear business communications integrated with your office network.",
     "services.s10.title": "CCTV Training & Recruitment",
     "services.s10.desc": "We train and recruit professional CCTV operators and technicians to support your security operations with skilled personnel.",
@@ -198,7 +198,7 @@ const translations = {
     "services.s7.desc": "Surveillance 24h/24 avec technologies de pointe pour détecter les menaces et fournir des images en direct.",
     "services.s8.title": "Service de maintenance",
     "services.s8.desc": "Maintenance régulière : nettoyage des caméras et équipements pour un fonctionnement optimal.",
-        "services.s9.title": "Installation téléphonie IP",
+    "services.s9.title": "Installation téléphonie IP",
     "services.s9.desc": "Conception et installation de téléphonie IP professionnelle intégrée à votre réseau de bureau.",
     "services.s10.title": "Formation et recrutement CCTV",
     "services.s10.desc": "Nous formons et recrutons des opérateurs et techniciens CCTV professionnels pour renforcer vos opérations de sécurité.",
@@ -271,22 +271,124 @@ const translations = {
 };
 
 const LANG_KEY = "sostech-lang";
+const COOKIE_MAX_AGE = 31536000;
+let i18nReady = false;
+
+function readLangFromUrl() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const lang = params.get("lang");
+    if (lang === "en" || lang === "fr") return lang;
+  } catch (e) {
+    /* ignore */
+  }
+  return null;
+}
+
+function readCookieLang() {
+  const match = document.cookie.match(/(?:^|;\s*)sostech-lang=(en|fr)(?:;|$)/);
+  return match ? match[1] : null;
+}
+
+function readStoredLang() {
+  try {
+    const stored = localStorage.getItem(LANG_KEY);
+    if (stored === "en" || stored === "fr") return stored;
+  } catch (e) {
+    /* localStorage unavailable */
+  }
+  try {
+    const session = sessionStorage.getItem(LANG_KEY);
+    if (session === "en" || session === "fr") return session;
+  } catch (e) {
+    /* sessionStorage unavailable */
+  }
+  return readCookieLang();
+}
+
+function storeLang(lang) {
+  if (lang !== "en" && lang !== "fr") return;
+  try {
+    localStorage.setItem(LANG_KEY, lang);
+  } catch (e) {
+    /* ignore */
+  }
+  try {
+    sessionStorage.setItem(LANG_KEY, lang);
+  } catch (e) {
+    /* ignore */
+  }
+  document.cookie = `${LANG_KEY}=${lang};path=/;max-age=${COOKIE_MAX_AGE};SameSite=Lax`;
+}
+
+function detectBrowserLang() {
+  const browser = (navigator.language || navigator.userLanguage || "en").toLowerCase();
+  return browser.startsWith("fr") ? "fr" : "en";
+}
 
 function getLanguage() {
-  const stored = localStorage.getItem(LANG_KEY);
-  if (stored === "en" || stored === "fr") return stored;
-  const browser = (navigator.language || "en").toLowerCase();
-  return browser.startsWith("fr") ? "fr" : "en";
+  const fromUrl = readLangFromUrl();
+  if (fromUrl) {
+    storeLang(fromUrl);
+    return fromUrl;
+  }
+  const stored = readStoredLang();
+  if (stored) return stored;
+  const detected = detectBrowserLang();
+  storeLang(detected);
+  return detected;
+}
+
+function syncLangInUrl(lang) {
+  try {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("lang") === lang) return;
+    url.searchParams.set("lang", lang);
+    window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+  } catch (e) {
+    /* ignore */
+  }
+}
+
+function isInternalPageLink(href) {
+  if (!href || href.startsWith("#")) return false;
+  if (/^(https?:|mailto:|tel:|javascript:)/i.test(href)) return false;
+  return /\.html(?:$|[?#])/i.test(href) || href === "/" || /^\/?index\.html/i.test(href);
+}
+
+function withLangInHref(href, lang) {
+  try {
+    const url = new URL(href, window.location.href);
+    url.searchParams.set("lang", lang);
+    return url.pathname + url.search + url.hash;
+  } catch (e) {
+    return href;
+  }
+}
+
+function syncInternalLinks(lang) {
+  document.querySelectorAll("a[href]").forEach((link) => {
+    const href = link.getAttribute("href");
+    if (!isInternalPageLink(href)) return;
+    link.setAttribute("href", withLangInHref(href, lang));
+  });
+}
+
+function updateLangButtons(lang) {
+  document.querySelectorAll(".lang-btn").forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.lang === lang);
+    btn.setAttribute("aria-pressed", btn.dataset.lang === lang ? "true" : "false");
+  });
 }
 
 function setLanguage(lang) {
   if (lang !== "en" && lang !== "fr") return;
-  localStorage.setItem(LANG_KEY, lang);
+  storeLang(lang);
   document.documentElement.lang = lang;
+  syncLangInUrl(lang);
+  syncInternalLinks(lang);
   applyTranslations(lang);
-  document.querySelectorAll(".lang-btn").forEach((btn) => {
-    btn.classList.toggle("is-active", btn.dataset.lang === lang);
-  });
+  updateLangButtons(lang);
 }
 
 function applyTranslations(lang) {
@@ -310,14 +412,37 @@ function applyTranslations(lang) {
   });
 }
 
+function bindLangSwitcher() {
+  document.addEventListener("click", (event) => {
+    const btn = event.target.closest(".lang-btn");
+    if (!btn || !btn.dataset.lang) return;
+    setLanguage(btn.dataset.lang);
+  });
+}
+
+function bindInternalLinkLang() {
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest("a[href]");
+    if (!link) return;
+    const href = link.getAttribute("href");
+    if (!isInternalPageLink(href)) return;
+    const lang = getLanguage();
+    link.setAttribute("href", withLangInHref(href, lang));
+  }, true);
+}
+
 function initI18n() {
+  if (i18nReady) return;
+  i18nReady = true;
+
   const lang = getLanguage();
   document.documentElement.lang = lang;
+  syncLangInUrl(lang);
+  syncInternalLinks(lang);
   applyTranslations(lang);
-  document.querySelectorAll(".lang-btn").forEach((btn) => {
-    btn.classList.toggle("is-active", btn.dataset.lang === lang);
-    btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
-  });
+  updateLangButtons(lang);
+  bindLangSwitcher();
+  bindInternalLinkLang();
 }
 
 window.translations = translations;
@@ -325,3 +450,9 @@ window.getLanguage = getLanguage;
 window.setLanguage = setLanguage;
 window.applyTranslations = applyTranslations;
 window.initI18n = initI18n;
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initI18n);
+} else {
+  initI18n();
+}

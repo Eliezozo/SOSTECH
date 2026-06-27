@@ -66,7 +66,6 @@ function initMain() {
   initActiveNav();
   initCopyrightYear();
   initFadeInObserver();
-  if (typeof initI18n === "function") initI18n();
 }
 
 document.addEventListener("DOMContentLoaded", initMain);
