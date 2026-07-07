@@ -91,6 +91,7 @@
               <p class="form-error" id="error-message" data-i18n="contact.error.message">Message error</p>
             </div>
             <button type="submit" class="btn btn-primary" data-i18n="contact.form.submit">Send Message</button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
       </div>
@@ -143,7 +144,13 @@
       <p>&copy; <span id="copyright-year"></span> <span data-i18n="footer.copyright">Sostech Systems. All rights reserved.</span></p>
     </div>
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="js/email-config.js"></script>
   <script src="js/i18n.js"></script>
+  <script src="js/content.js"></script>
   <script src="js/main.js"></script>
   <script src="js/contact.js"></script>
 </body>

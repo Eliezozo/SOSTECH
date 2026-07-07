@@ -133,6 +133,10 @@ const translations = {
     "contact.error.email": "Please enter a valid email address.",
     "contact.error.phone": "Please enter a valid phone number.",
     "contact.error.message": "Please enter a message (at least 10 characters).",
+    "contact.status.sending": "Sending…",
+    "contact.status.success": "Thank you! Your message has been sent. We'll get back to you shortly.",
+    "contact.status.error": "Sorry, something went wrong. Please try again or call us directly.",
+    "contact.status.fallback": "Opening your email app…",
     "contact.map.title": "Find Us"
   },
   fr: {
@@ -268,6 +272,10 @@ const translations = {
     "contact.error.email": "Veuillez saisir une adresse e-mail valide.",
     "contact.error.phone": "Veuillez saisir un numéro de téléphone valide.",
     "contact.error.message": "Veuillez saisir un message (au moins 10 caractères).",
+    "contact.status.sending": "Envoi en cours…",
+    "contact.status.success": "Merci ! Votre message a été envoyé. Nous vous répondrons rapidement.",
+    "contact.status.error": "Désolé, une erreur est survenue. Réessayez ou appelez-nous directement.",
+    "contact.status.fallback": "Ouverture de votre application e-mail…",
     "contact.map.title": "Nous trouver"
   }
 };

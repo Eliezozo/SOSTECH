@@ -466,6 +466,50 @@
   resize: vertical;
 }
 
+.form-status {
+  display: none;
+  margin-top: var(--space-sm);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  border: 1px solid transparent;
+}
+
+.form-status.is-visible {
+  display: block;
+  animation: fade-status 0.3s ease;
+}
+
+@keyframes fade-status {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-status--success {
+  color: #7fe9c3;
+  background: rgba(0, 194, 168, 0.12);
+  border-color: rgba(0, 194, 168, 0.4);
+}
+
+.form-status--error {
+  color: #ffb4ab;
+  background: rgba(230, 93, 76, 0.12);
+  border-color: rgba(230, 93, 76, 0.4);
+}
+
+.form-status--info {
+  color: var(--color-gold-light);
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.35);
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
 @media (max-width: 992px) {
   .footer-grid {
     grid-template-columns: repeat(2, 1fr);

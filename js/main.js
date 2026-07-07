@@ -125,6 +125,7 @@ function initMain() {
   initCopyrightYear();
   initFadeInObserver();
   initProjectVideos();
+  document.addEventListener("sostech:projects-rendered", initProjectVideos);
 }
 
 document.addEventListener("DOMContentLoaded", initMain);
