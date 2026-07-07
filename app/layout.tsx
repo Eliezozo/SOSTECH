@@ -23,10 +23,9 @@ export const metadata: Metadata = {
   description:
     "Sostech Systems designs, installs and maintains CCTV, alarm, access control and surveillance solutions in Accra, Ghana.",
   icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/logo.png", type: "image/png" },
-    ],
+    icon: [{ url: "/logo.png", type: "image/png" }],
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
 };
 
