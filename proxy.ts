@@ -19,7 +19,6 @@ function shouldSkip(pathname: string): boolean {
   ) {
     return true;
   }
-  // Static files with extensions (images, fonts, videos, etc.)
   return /\.[a-zA-Z0-9]+$/.test(pathname);
 }
 
@@ -44,7 +43,7 @@ function setLocaleCookie(response: NextResponse, locale: string) {
   });
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   try {
     const { pathname } = request.nextUrl;
 
@@ -73,18 +72,12 @@ export function middleware(request: NextRequest) {
     setLocaleCookie(response, locale);
     return response;
   } catch {
-    // Never crash the edge function — fall through to the app.
     return NextResponse.next();
   }
 }
 
 export const config = {
   matcher: [
-    /*
-     * Run on all paths EXCEPT:
-     * - _next/* (all Next.js internals, including /_next/data)
-     * - api, admin, static assets, videos
-     */
     "/((?!_next|api|admin|favicon\\.ico|favicon\\.svg|logo\\.png|hero-technician\\.png|robots\\.txt|sitemap\\.xml|videos).*)",
   ],
 };

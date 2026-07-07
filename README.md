@@ -3,7 +3,7 @@
 Bilingual (EN/FR) marketing site + admin CMS for **Sostech Systems**, a security,
 CCTV and surveillance company in Accra, Ghana.
 
-Built with **Next.js (App Router) · TypeScript · Tailwind CSS · Supabase · Nodemailer**.
+Built with **Next.js 16 (App Router) · TypeScript · Tailwind CSS · Supabase · Nodemailer**.
 
 ---
 
