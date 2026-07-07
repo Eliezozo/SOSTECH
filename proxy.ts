@@ -15,7 +15,8 @@ function shouldSkip(pathname: string): boolean {
     pathname === "/logo.png" ||
     pathname === "/hero-technician.png" ||
     pathname === "/robots.txt" ||
-    pathname === "/sitemap.xml"
+    pathname === "/sitemap.xml" ||
+    pathname.endsWith(".html")
   ) {
     return true;
   }
