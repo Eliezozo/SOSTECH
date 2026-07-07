@@ -7,7 +7,7 @@ export const siteConfig = {
   ],
   address: "Spintex Road, Accra, Ghana",
   mapQuery: "Spintex+Road+Accra+Ghana",
-  url: "https://sostech-systems.vercel.app",
+  url: "https://sostech.vercel.app",
 };
 
 export const navKeys = ["home", "services", "projects", "about", "contact"] as const;

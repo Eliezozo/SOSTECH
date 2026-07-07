@@ -44,7 +44,7 @@ function setLocaleCookie(response: NextResponse, locale: string) {
   });
 }
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   try {
     const { pathname } = request.nextUrl;
 

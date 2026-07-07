@@ -3,7 +3,7 @@
 Bilingual (EN/FR) marketing site + admin CMS for **Sostech Systems**, a security,
 CCTV and surveillance company in Accra, Ghana.
 
-Built with **Next.js 16 (App Router) · TypeScript · Tailwind CSS · Supabase · Nodemailer**.
+Built with **Next.js 15 (App Router) · TypeScript · Tailwind CSS · Supabase · Nodemailer**.
 
 ---
 
@@ -80,7 +80,22 @@ Now log in at `/admin` and start uploading.
 
 ## 4. Deploy to Vercel
 
-- Framework preset: **Next.js** (auto-detected)
+**Project URL:** https://sostech.vercel.app
+
+In **Vercel → Project → Settings → Build and Deployment**, verify:
+
+| Setting | Required value |
+|---|---|
+| Framework Preset | **Next.js** (not "Other") |
+| Output Directory | **empty** (do not set `public`) |
+| Root Directory | **empty** |
+| Node.js Version | **20.x** |
+| Build Command | `npm run build` (default) |
+
+> If `/logo.png` loads but `/` and `/en` show `404 NOT_FOUND`, the project is
+> deployed as a **static site** — clear **Output Directory** and set Framework
+> to **Next.js**, then redeploy.
+
 - Add all environment variables from step 2
 - Deploy. The `/admin` route is `noindex` and excluded from `robots.txt`.
 
