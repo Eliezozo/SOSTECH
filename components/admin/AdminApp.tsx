@@ -10,13 +10,10 @@ import Dashboard from "./Dashboard";
 export default function AdminApp() {
   const [configured] = useState(() => isSupabaseConfigured());
   const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(configured);
 
   useEffect(() => {
-    if (!configured) {
-      setLoading(false);
-      return;
-    }
+    if (!configured) return;
     const supabase = createClient();
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
