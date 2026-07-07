@@ -1,6 +1,7 @@
 -- ============================================================
 -- Sostech Systems — Supabase schema
--- Run this in your Supabase project: SQL Editor → New query → Run
+-- Run this in your Supabase project: SQL Editor → New query → Run.
+-- Safe to run more than once (idempotent).
 -- ============================================================
 
 -- 1) PROJECTS (videos / images shown on the Projects page)
@@ -22,11 +23,11 @@ create table if not exists public.gallery (
   id          uuid primary key default gen_random_uuid(),
   title       text default '',
   image_url   text not null,                -- storage path or full URL
-  sort_order  int  not null default 0,
+  sort_order  bigint not null default 0,
   created_at  timestamptz not null default now()
 );
 
--- 3) SITE CONTENT (editable text overrides, keyed by i18n key)
+-- 3) SITE CONTENT (editable text overrides, keyed by dotted path)
 create table if not exists public.site_content (
   key         text primary key,            -- e.g. "contact.info.addressValue"
   value_en    text default '',
@@ -41,24 +42,33 @@ alter table public.projects     enable row level security;
 alter table public.gallery      enable row level security;
 alter table public.site_content enable row level security;
 
--- Public read
+drop policy if exists "public read projects"     on public.projects;
+drop policy if exists "public read gallery"       on public.gallery;
+drop policy if exists "public read site_content"  on public.site_content;
 create policy "public read projects"     on public.projects     for select using (true);
 create policy "public read gallery"       on public.gallery      for select using (true);
 create policy "public read site_content"  on public.site_content for select using (true);
 
--- Authenticated write (insert / update / delete)
+drop policy if exists "admin write projects"     on public.projects;
+drop policy if exists "admin write gallery"       on public.gallery;
+drop policy if exists "admin write site_content"  on public.site_content;
 create policy "admin write projects"     on public.projects
-  for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+  for all to authenticated using (true) with check (true);
 create policy "admin write gallery"       on public.gallery
-  for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+  for all to authenticated using (true) with check (true);
 create policy "admin write site_content"  on public.site_content
-  for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+  for all to authenticated using (true) with check (true);
 
 -- ============================================================
 -- STORAGE: create a PUBLIC bucket named "media" in the dashboard
---   Storage → New bucket → name: media → Public: ON
--- Then run the policies below so admins can upload/delete.
+--   Storage → New bucket → name: media → Public bucket: ON
+-- Then run the policies below so admins can upload / delete.
 -- ============================================================
+drop policy if exists "public read media"   on storage.objects;
+drop policy if exists "admin upload media"   on storage.objects;
+drop policy if exists "admin update media"   on storage.objects;
+drop policy if exists "admin delete media"   on storage.objects;
+
 create policy "public read media"
   on storage.objects for select
   using ( bucket_id = 'media' );
@@ -79,6 +89,6 @@ create policy "admin delete media"
 -- ADMIN USER
 -- Create your admin login in the dashboard:
 --   Authentication → Users → Add user → enter email + password
--- (Disable "Enable email confirmations" in Authentication → Providers
+-- (In Authentication → Providers → Email, turn OFF "Confirm email"
 --  if you want the account active immediately.)
 -- ============================================================

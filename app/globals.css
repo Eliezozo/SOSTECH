@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: #071222;
+    --color-bg-alt: #0c1a35;
+    --color-bg-card: #101f3d;
+    --color-blue: #1a4fa0;
+    --color-blue-light: #2d6fd4;
+    --color-gold: #d4af37;
+    --color-gold-light: #f0cc5a;
+    --header-height: 76px;
+  }
+
+  * {
+    @apply border-content-muted/10;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ink text-content font-body antialiased;
+    background-image:
+      radial-gradient(ellipse 70% 55% at 85% -5%, rgba(26, 79, 160, 0.22), transparent 60%),
+      radial-gradient(ellipse 50% 45% at 5% 5%, rgba(212, 175, 55, 0.08), transparent 55%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-heading font-bold tracking-tight text-content;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    @apply bg-gold/30 text-white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(45, 111, 212, 0.35);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.45);
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-container px-5 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-semibold
+      transition-all duration-300 ease-smooth focus-visible:outline-none focus-visible:ring-2
+      focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ink;
+  }
+
+  .btn-primary {
+    @apply btn bg-blue text-white shadow-md hover:bg-blue-light hover:shadow-glow-blue
+      hover:-translate-y-0.5;
+  }
+
+  .btn-gold {
+    @apply btn bg-gold text-ink shadow-md hover:bg-gold-light hover:shadow-glow-gold
+      hover:-translate-y-0.5;
+  }
+
+  .btn-outline {
+    @apply btn border border-gold/40 text-content hover:border-gold hover:bg-gold/10
+      hover:-translate-y-0.5;
+  }
+
+  .card {
+    @apply rounded-lg border border-white/[0.06] bg-ink-card/80 p-6 shadow-sm backdrop-blur-sm
+      transition-all duration-300 ease-smooth;
+  }
+
+  .card-hover {
+    @apply hover:-translate-y-1 hover:border-gold/30 hover:shadow-glow-blue;
+  }
+
+  .eyebrow {
+    @apply mb-3 inline-block text-xs font-semibold uppercase tracking-[0.25em] text-gold;
+  }
+
+  .section {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-gold-light via-gold to-blue-light bg-clip-text text-transparent;
+  }
+
+  .link-underline {
+    @apply relative after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0
+      after:bg-gold after:transition-all after:duration-300 hover:after:w-full;
+  }
+}
+
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
